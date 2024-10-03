@@ -1,0 +1,22 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches:
+    - dev
+
+jobs:
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Aftman
+      uses: ok-nick/setup-aftman@v0.4.2
+
+    - run: rojo build -o ci-cd-pipeline-test.rbxl
+
+    - run: rbxcloud experience publish --filename Compound-Orion.rbxl --place-id 94878581069878 --universe-id 6629395973 --version-type published --api-key ${{ secrets.API_KEY }}
