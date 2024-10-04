@@ -5,6 +5,7 @@ local import = require(ReplicatedStorage.Packages.import)
 import.setAliases({
 	packages = ReplicatedStorage.Packages,
 	services = script.Services,
+	shared = ReplicatedStorage.Shared,
 })
 
 import.setConfig({
