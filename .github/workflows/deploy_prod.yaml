@@ -17,6 +17,6 @@ jobs:
     - name: Install Aftman
       uses: ok-nick/setup-aftman@v0.4.2
 
-    - run: rojo build -o ci-cd-pipeline-test.rbxl
+    - run: rojo build -o Kronos-Rewrite.rbxl
 
     - run: rbxcloud experience publish --filename Kronos-Rewrite.rbxl --place-id 70409779519095 --universe-id 6629397671 --version-type published --api-key ${{ secrets.API_KEY }}
