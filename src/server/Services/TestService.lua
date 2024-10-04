@@ -17,7 +17,7 @@ local TestService = Knit.CreateService({
 
 -- @staticfunction TestService:KnitStart
 function TestService:KnitStart(): ()
-	print("Knit works!")
+	print("[Server] Knit works!")
 end
 
 return TestService
