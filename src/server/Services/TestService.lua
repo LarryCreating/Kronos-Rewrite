@@ -20,4 +20,4 @@ function TestService:KnitStart(): ()
 	print("Knit works!")
 end
 
-return TestServic
+return TestService
