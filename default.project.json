@@ -13,14 +13,14 @@
     },
 
     "ServerScriptService": {
-      "Server": {
+      "Knit": {
         "$path": "src/server"
       }
     },
 
     "StarterPlayer": {
       "StarterPlayerScripts": {
-        "Client": {
+        "Knit": {
           "$path": "src/client"
         }
       }
