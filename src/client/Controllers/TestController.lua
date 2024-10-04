@@ -5,6 +5,7 @@
 ]]
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
 
 local import = require(ReplicatedStorage.Packages.import)
 
@@ -14,9 +15,21 @@ local TestController = Knit.CreateController({
 	Name = "TestController",
 })
 
+local PermissionService
+
+local Player = Players.LocalPlayer
+
+-- @staticfunction TestController:TestForPermissions
+function TestController:TestForPermissions(): ()
+	if PermissionService:HasPermission("All") then
+		print("Works!")
+	end
+end
+
 -- @staticfunction TestController:KnitStart
 function TestController:KnitStart(): ()
-	print("[Client] Knit works!")
+	PermissionService = Knit.GetService("PermissionService")
+	self:TestForPermissions()
 end
 
 return TestController

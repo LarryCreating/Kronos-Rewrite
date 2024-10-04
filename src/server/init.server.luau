@@ -6,6 +6,7 @@ import.setAliases({
 	packages = ReplicatedStorage.Packages,
 	services = script.Services,
 	shared = ReplicatedStorage.Shared,
+	modules = script.Modules,
 })
 
 import.setConfig({

@@ -20,6 +20,16 @@ local VERBOSE_LOGS = true
 
 -- @staticfunction PermissionService:HasPermission
 function PermissionService.Client:HasPermission(Player, Data): () -> boolean
+	if not PermissionService.HasInitialised then
+		if PermissionService.Initialising then
+			repeat
+				task.wait()
+			until PermissionService.HasInitialised
+		else
+			PermissionService:init()
+		end
+	end
+
 	if typeof(Data) == "Instance" then
 		if Data:IsA("ObjectValue") then
 			Data = Data.Value
@@ -27,6 +37,8 @@ function PermissionService.Client:HasPermission(Player, Data): () -> boolean
 		if Data:IsA("ModuleScript") then
 			Data = require(Data)
 		end
+	elseif typeof(Data) == "string" then
+		Data = { Data }
 	end
 
 	if typeof(Player) == "number" then
@@ -123,22 +135,15 @@ end
 -- @staticfunction PermissionService:init
 function PermissionService:init()
 	self.Initialising = true
-	self:RegisterFunctionsIn(import("shared/Permissions"))
+
+	local Permissions = import("modules/Permissions")
+	repeat
+		task.wait()
+	until #Permissions:GetChildren() > 1
+	self:RegisterFunctionsIn(Permissions)
+
 	self.HasInitialised = true
 	self.Initialising = false
-end
-
--- @staticfunction PermissionService:KnitStart
-function PermissionService:KnitStart(): ()
-	if not self.HasInitialised then
-		if self.Initialising then
-			repeat
-				task.wait()
-			until self.HasInitialised
-		else
-			self:init()
-		end
-	end
 end
 
 return PermissionService
