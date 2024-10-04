@@ -1,1 +1,5 @@
-std = "roblox"
+std = "roblox+testez"
+
+[lints]
+unused_variable = "allow"
+incorrect_standard_library_use = "allow"

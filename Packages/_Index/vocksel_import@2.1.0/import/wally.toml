@@ -1,0 +1,18 @@
+[package]
+name = "vocksel/import"
+description = "Import modules with paths like the filesystem"
+version = "2.1.0"
+authors = [ "David Minnerly <me@vocksel.com>" ]
+license = "MIT"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+exclude = [
+	"*.spec.lua",
+	"src/mocks",
+	"src/newFolder.lua",
+]
+
+[dependencies]
+t = "osyrisrblx/t@3.0.0"
+Llama = "freddylist/llama@1.1.1"
+TestEZ = "roblox/testez@0.4.1"

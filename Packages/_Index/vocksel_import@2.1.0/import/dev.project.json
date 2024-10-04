@@ -1,0 +1,19 @@
+{
+  "name": "import",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "Packages": {
+        "$path": "Packages",
+        "import": {
+          "$path": "src"
+        }
+      }
+    },
+    "ServerScriptService": {
+      "tests": {
+        "$path": "tests"
+      }
+    }
+  }
+}
