@@ -323,7 +323,7 @@ function Door:SetupReaders(): ()
 					ProximityPrompt.KeyboardKeyCode = Enum.KeyCode.E
 					ProximityPrompt.RequiresLineOfSight = true
 					ProximityPrompt.MaxActivationDistance = self.ReaderMaxActivationDistance or 6
-					ProximityPrompt.Style = Enum.ProximityPromptStyle.Custom
+					ProximityPrompt.Style = Enum.ProximityPromptStyle.Default
 					ProximityPrompt.HoldDuration = Data.HoldDuration or 0
 					ProximityPrompt.Parent = Descendant
 					ProximityPrompt.Enabled = false

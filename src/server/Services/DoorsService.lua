@@ -18,7 +18,7 @@ local DoorsService = Knit.CreateService({
 	Client = {},
 })
 
-local TagService = Knit.GetService("TagService")
+local TagService
 
 -- @staticfunction DoorsService:GetDoor
 function DoorsService:GetDoor(Object): ()
@@ -49,6 +49,8 @@ end
 
 -- @staticfunction DoorsService:KnitStart
 function DoorsService:KnitStart(): ()
+	TagService = Knit.GetService("TagService")
+
 	TagService:BindToTag("Door", function(Object)
 		local success, result = pcall(self.GetDoor, self, Object)
 
