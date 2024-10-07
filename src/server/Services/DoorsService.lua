@@ -9,12 +9,16 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local import = require(ReplicatedStorage.Packages.import)
 
 local Knit = import("packages/Knit")
+local Promise = import("packages/Promise")
+
 local DoorClass = import("middleware/Doors/Door")
 
 local DoorsService = Knit.CreateService({
 	Name = "DoorsService",
 	Client = {},
 })
+
+local TagService = Knit.GetService("TagService")
 
 -- @staticfunction DoorsService:GetDoor
 function DoorsService:GetDoor(Object): ()
@@ -44,6 +48,14 @@ function DoorsService.Client:Clicker(Player, DoorModel, ShouldLockdown): ()
 end
 
 -- @staticfunction DoorsService:KnitStart
-function DoorsService:KnitStart(): () end
+function DoorsService:KnitStart(): ()
+	TagService:BindToTag("Door", function(Object)
+		local success, result = pcall(self.GetDoor, self, Object)
+
+		if not success then
+			warn("Error while initialising door", Object:GetFullName() .. ":", result)
+		end
+	end)
+end
 
 return DoorsService
