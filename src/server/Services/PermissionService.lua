@@ -136,7 +136,7 @@ end
 function PermissionService:init()
 	self.Initialising = true
 
-	local Permissions = import("modules/Permissions")
+	local Permissions = import("middleware/Permissions")
 	repeat
 		task.wait()
 	until #Permissions:GetChildren() > 1
