@@ -19,7 +19,7 @@ local PermissionService = Knit.CreateService({
 local VERBOSE_LOGS = true
 
 -- @staticfunction PermissionService:HasPermission
-function PermissionService.Client:HasPermission(Player, Data): () -> boolean
+function PermissionService:HasPermission(Player, Data): () -> boolean
 	if not PermissionService.HasInitialised then
 		if PermissionService.Initialising then
 			repeat
@@ -107,6 +107,11 @@ function PermissionService.Client:HasPermission(Player, Data): () -> boolean
 	end
 
 	return RequireAll
+end
+
+-- @staticfunction PermissionService.Client:HasPermission
+function PermissionService.Client:HasPermission(Player, Data): () -> boolean
+	return self.Server:HasPermission(Player, Data)
 end
 
 -- @staticfunction PermissionService:RegisterFunction

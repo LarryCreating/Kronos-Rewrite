@@ -15,7 +15,7 @@ local Janitor = import("packages/Janitor")
 
 local DoorFunctions = import("middleware/Doors/Doors")
 
-local PermissionService = Knit.GetService("PermissionService")
+local PermissionService
 
 local Door = {}
 Door.__index = Door
@@ -24,6 +24,7 @@ Door.__index = Door
 -- @type Constructor
 -- @description Sets up a new door object.
 function Door.new(Object): ()
+	PermissionService = Knit.GetService("PermissionService")
 	local SettingsFile = Object:FindFirstChild("Settings")
 	local self = setmetatable((SettingsFile and require(SettingsFile) or {}), Door)
 
@@ -296,8 +297,8 @@ end
 function Door:SetupReaders(): ()
 	local ReaderNames = {
 		["NFCReader"] = {
-			HoldDuration = 0,
-			RequiresKeycard = true,
+			HoldDuration = 2,
+			RequiresKeycard = false,
 		},
 	}
 	self.LEDs = {

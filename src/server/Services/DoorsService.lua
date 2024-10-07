@@ -16,6 +16,7 @@ local DoorClass = import("middleware/Doors/Door")
 local DoorsService = Knit.CreateService({
 	Name = "DoorsService",
 	Client = {},
+	Doors = {},
 })
 
 local TagService
