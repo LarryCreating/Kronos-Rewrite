@@ -9,9 +9,9 @@ local Players = game:GetService("Players")
 
 local import = require(ReplicatedStorage.Packages.import)
 
-local Knit = import("packages/Knit")
+local Weaver = import("packages/Weaver")
 
-local TestController = Knit.CreateController({
+local TestController = Weaver.CreateController({
 	Name = "TestController",
 })
 
@@ -21,14 +21,14 @@ local Player = Players.LocalPlayer
 
 -- @staticfunction TestController:TestForPermissions
 function TestController:TestForPermissions(): ()
-	if PermissionService:HasPermission("All") then
+	--[[if PermissionService:HasPermission("All") then
 		print("Works!")
-	end
+	end]]
 end
 
--- @staticfunction TestController:KnitStart
-function TestController:KnitStart(): ()
-	PermissionService = Knit.GetService("PermissionService")
+-- @staticfunction TestController:WeaverInit
+function TestController:WeaverInit(): ()
+	PermissionService = Weaver.GetService("PermissionService")
 	self:TestForPermissions()
 end
 

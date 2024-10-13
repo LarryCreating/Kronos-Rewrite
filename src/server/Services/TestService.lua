@@ -8,16 +8,16 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local import = require(ReplicatedStorage.Packages.import)
 
-local Knit = import("packages/Knit")
+local Weaver = import("packages/Weaver")
 
-local TestService = Knit.CreateService({
+local TestService = Weaver.CreateService({
 	Name = "TestService",
 	Client = {},
 })
 
--- @staticfunction TestService:KnitStart
-function TestService:KnitStart(): ()
-	print("[Server] Knit works!")
+-- @staticfunction TestService:WeaverInit
+function TestService:WeaverInit(): ()
+	print("[Server] Weaver works!")
 end
 
 return TestService

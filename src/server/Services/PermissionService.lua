@@ -9,146 +9,49 @@ local Players = game:GetService("Players")
 
 local import = require(ReplicatedStorage.Packages.import)
 
-local Knit = import("packages/Knit")
+local Weaver = import("packages/Weaver")
 
-local PermissionService = Knit.CreateService({
+local PermissionFunctionsFolder = import("middleware/Permissions")
+
+local PermissionService = Weaver.CreateService({
 	Name = "PermissionService",
 	Client = {},
 })
 
-local VERBOSE_LOGS = true
-
 -- @staticfunction PermissionService:HasPermission
-function PermissionService:HasPermission(Player, Data): () -> boolean
-	if not PermissionService.HasInitialised then
-		if PermissionService.Initialising then
-			repeat
-				task.wait()
-			until PermissionService.HasInitialised
-		else
-			PermissionService:init()
-		end
-	end
-
-	if typeof(Data) == "Instance" then
-		if Data:IsA("ObjectValue") then
-			Data = Data.Value
-		end
-		if Data:IsA("ModuleScript") then
-			Data = require(Data)
-		end
-	elseif typeof(Data) == "string" then
-		Data = { Data }
-	end
-
-	if typeof(Player) == "number" then
-		for i, PlayerObject in ipairs(Players:GetPlayers()) do
-			if PlayerObject.UserId == Player then
-				Player = PlayerObject
-			end
-		end
-
-		if typeof(Player) == "number" then
-			return false
-		end
-	end
-
-	local RequireAll = not not (Data and Data.RequireAll)
-
-	for _, PermissionSegment in pairs(Data) do
-		if type(PermissionSegment) == "table" then
-			if self:HasPermission(Player, PermissionSegment, true) then
-				if not RequireAll then
-					return true
-				end
-			end
-		elseif type(PermissionSegment) == "string" then
-			local returnOpposite = false
-
-			if string.sub(PermissionSegment, 0, 1) == "!" then
-				returnOpposite = true
-				PermissionSegment = string.sub(PermissionSegment, 2)
-			end
-
-			local Split = string.split(PermissionSegment, ":")
-			local FunctionName = Split[1]
-
-			if PermissionService.Functions[FunctionName] then
-				local hasPerm = PermissionService.Functions[FunctionName](Player, self, table.unpack(Split, 2))
-
-				if returnOpposite then
-					hasPerm = not hasPerm
-				end
-
-				if hasPerm then
-					if not RequireAll then
-						return true
-					end
-				elseif RequireAll then
-					return false
-				end
-			elseif RequireAll then
-				warn(
-					'Permission function with the name "' .. FunctionName .. '" was not found (ReqAll).',
-					debug.traceback()
-				)
-				return false
-			end
-		elseif typeof(PermissionSegment) == "function" then
-			local success, result = pcall(PermissionSegment, Player)
-			local PassedCheck = success and (result == true)
-
-			if PassedCheck and not RequireAll then
-				return true
-			elseif not PassedCheck and RequireAll then
-				return false
-			end
-		end
-	end
-
-	return RequireAll
+function PermissionService:HasPermission(...): () -> boolean
+	return import("shared/Permissions"):HasPermission(...)
 end
 
--- @staticfunction PermissionService.Client:HasPermission
-function PermissionService.Client:HasPermission(Player, Data): () -> boolean
-	return self.Server:HasPermission(Player, Data)
-end
+-- @staticfunction PermissionService:WeaverInit
+function PermissionService:WeaverInit(): ()
+	if not ReplicatedStorage:FindFirstChild("ReplicatedPermissions") then
+		self.ReplicatedFolder = Instance.new("Folder")
+		self.ReplicatedFolder.Name = "ReplicatedPermissions"
+		self.ReplicatedFolder.Parent = ReplicatedStorage
+	else
+		self.ReplicatedFolder = ReplicatedStorage.ReplicatedPermissions
+	end
 
--- @staticfunction PermissionService:RegisterFunction
-function PermissionService:RegisterFunction(Name, Function): ()
-	self.Functions[Name] = Function
-end
+	if PermissionFunctionsFolder:FindFirstChild("shared") then
+		PermissionFunctionsFolder.shared.Parent = self.ReplicatedFolder
+	end
 
--- @staticfunction PermissionService:RegisterFunctionsIn
-function PermissionService:RegisterFunctionsIn(Folder): ()
-	local Children = Folder:GetChildren()
-	for i, Module in pairs(Children) do
-		if Module:IsA("ModuleScript") then
-			local success, result = pcall(function()
-				return self:RegisterFunction(Module.Name, require(Module))
-			end)
-			if success and VERBOSE_LOGS then
-				print("Registered permission function:", Module.Name, tostring(i) .. "/" .. tostring(#Children))
-			elseif VERBOSE_LOGS then
-				warn('Failed to register permission function "' .. Module.Name .. '":')
-			end
+	if PermissionFunctionsFolder:FindFirstChild("client") then
+		PermissionFunctionsFolder.client.Parent = self.ReplicatedFolder
+	end
+
+	if not ReplicatedStorage:FindFirstChild("ServerCheck") then
+		local ServerCheck = Instance.new("RemoteFunction")
+		ServerCheck.Name = "ServerCheck"
+		ServerCheck.Parent = self.PermissionRemotes
+
+		ServerCheck.OnServerInvoke = function(_, Player, Data)
+			return self:HasPermission(Player, Data)
 		end
 	end
-	print("Registered Permissions functions in", Folder)
-end
 
--- @staticfunction PermissionService:init
-function PermissionService:init()
-	self.Initialising = true
-
-	local Permissions = import("middleware/Permissions")
-	repeat
-		task.wait()
-	until #Permissions:GetChildren() > 1
-	self:RegisterFunctionsIn(Permissions)
-
-	self.HasInitialised = true
-	self.Initialising = false
+	return self
 end
 
 return PermissionService

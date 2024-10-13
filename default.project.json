@@ -13,14 +13,14 @@
     },
 
     "ServerScriptService": {
-      "Knit": {
+      "Weaver": {
         "$path": "src/server"
       }
     },
 
     "StarterPlayer": {
       "StarterPlayerScripts": {
-        "Knit": {
+        "Weaver": {
           "$path": "src/client"
         }
       }

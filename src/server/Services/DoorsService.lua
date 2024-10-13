@@ -8,12 +8,11 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local import = require(ReplicatedStorage.Packages.import)
 
-local Knit = import("packages/Knit")
-local Promise = import("packages/Promise")
+local Weaver = import("packages/Weaver")
 
 local DoorClass = import("middleware/Doors/Door")
 
-local DoorsService = Knit.CreateService({
+local DoorsService = Weaver.CreateService({
 	Name = "DoorsService",
 	Client = {},
 	Doors = {},
@@ -48,10 +47,9 @@ function DoorsService.Client:Clicker(Player, DoorModel, ShouldLockdown): ()
 	end
 end
 
--- @staticfunction DoorsService:KnitStart
-function DoorsService:KnitStart(): ()
-	TagService = Knit.GetService("TagService")
-
+-- @staticfunction DoorsService:WeaverInit
+function DoorsService:WeaverInit(): ()
+	TagService = Weaver.GetService("TagService")
 	TagService:BindToTag("Door", function(Object)
 		local success, result = pcall(self.GetDoor, self, Object)
 

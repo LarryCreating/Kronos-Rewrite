@@ -7,7 +7,7 @@ realm = "shared"
 [dependencies]
 TestEZ = "roblox/testez@0.4.1"
 Promise = "evaera/promise@4.0.0"
-Knit = "sleitnick/knit@1.7.0"
+Weaver = "paracosm-daemon/weaver@1.1.0"
 Janitor = "howmanysmall/janitor@1.17.0"
 Cmdr = "evaera/cmdr@1.12.0"
 import = "vocksel/import@2.1.0"

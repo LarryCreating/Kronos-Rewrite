@@ -10,8 +10,10 @@ local PhysicsService = game:GetService("PhysicsService")
 
 local import = require(ReplicatedStorage.Packages.import)
 
-local Knit = import("packages/Knit")
+local Weaver = import("packages/Weaver")
+
 local Janitor = import("packages/Janitor")
+local Promise = import("packages/Promise")
 
 local DoorFunctions = import("middleware/Doors/Doors")
 
@@ -24,7 +26,7 @@ Door.__index = Door
 -- @type Constructor
 -- @description Sets up a new door object.
 function Door.new(Object): ()
-	PermissionService = Knit.GetService("PermissionService")
+	PermissionService = Weaver.GetService("PermissionService")
 	local SettingsFile = Object:FindFirstChild("Settings")
 	local self = setmetatable((SettingsFile and require(SettingsFile) or {}), Door)
 
@@ -342,6 +344,7 @@ function Door:SetupReaders(): ()
 							return
 						end
 
+						print("Toggled")
 						self:PlayerInteracted(Player)
 					end)
 

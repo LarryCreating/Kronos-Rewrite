@@ -9,9 +9,9 @@ local CollectionService = game:GetService("CollectionService")
 
 local import = require(ReplicatedStorage.Packages.import)
 
-local Knit = import("packages/Knit")
+local Weaver = import("packages/Weaver")
 
-local TagService = Knit.CreateService({
+local TagService = Weaver.CreateService({
 	Name = "TagService",
 	Client = {},
 })

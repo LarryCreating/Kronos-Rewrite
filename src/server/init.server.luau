@@ -15,24 +15,16 @@ import.setConfig({
 	waitForChildTimeout = 5,
 })
 
-local Knit = import("packages/Knit")
+local Weaver = import("packages/Weaver")
 local Promise = import("packages/Promise")
 local TestEZ = import("packages/TestEZ")
 local Services = import("services")
 
 local Runtime = os.clock()
 
-Promise.new(function(resolve)
-	for i, Service in ipairs(Services:GetDescendants()) do
-		if Service:IsA("ModuleScript") and string.find(Service.Name, "Service") then
-			require(Service)
-		end
-	end
+Weaver.AddServices(Services)
 
-	resolve()
-end):catch(warn)
-
-Knit:Start()
+Promise.try(Weaver.Start)
 	:andThen(function()
 		print(string.format("[Server] Took %.4f seconds to initialize services.", os.clock() - Runtime))
 	end)
